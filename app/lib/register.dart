@@ -157,7 +157,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   FlatButton(
                     child: Text('Login here!'),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                   )
                 ],

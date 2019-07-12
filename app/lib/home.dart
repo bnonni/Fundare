@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title, this.user_id}) : super(key: key);
@@ -12,18 +10,6 @@ class HomePage extends StatefulWidget {
 
 // StatelessWidget is @immutable => requires final attributes
 class _HomePageState extends State<HomePage> {
-  FirebaseUser currentUser;
-
-  @override
-  initState() {
-    this.getCurrentUser();
-    super.initState();
-  }
-
-  void getCurrentUser() async {
-    currentUser = await FirebaseAuth.instance.currentUser();
-  }
-
   // @override overrides default app build method
   // returns Scaffold obj containing main page with button choices
   @override

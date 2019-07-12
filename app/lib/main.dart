@@ -11,7 +11,7 @@ class FundareApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fundare: Helping Lost Vehicles Find Lost Drivers.',
+      title: 'Fundare App - CSc 4350, Georgia State University - Prof A. Mussa',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),

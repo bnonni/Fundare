@@ -17,6 +17,8 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController pwdInputController;
   FirebaseUser currentUser;
 
+  String registerRoute = '/register';
+
   @override
   initState() {
     emailInputController = new TextEditingController();
@@ -58,14 +60,14 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Email*', hintText: 'first.last@gmail.com'),
+                        labelText: 'Email', hintText: 'first.last@gmail.com'),
                     controller: emailInputController,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Password*', hintText: '********'),
+                        labelText: 'Password', hintText: '********'),
                     controller: pwdInputController,
                     obscureText: true,
                     validator: pwdValidator,
@@ -103,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                   FlatButton(
                     child: Text('Register here!'),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushReplacementNamed(context, '/register');
                     },
                   )
                 ],
