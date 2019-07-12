@@ -4,66 +4,68 @@ import 'package:flutter/material.dart';
 void main() => runApp(FundareApp());
 
 class FundareApp extends StatelessWidget {
-  // This widget is the root of your application.
-  //@override overrides default app build method
-  //returns MaterialApp obj containing meta title, theme, UI title
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fundare on Flutter',
+      title: 'Fundare: Helping Lost Vehicles Find Lost Drivers.',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: HomePage(title: 'Home'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/login': (context) => LoginForm(),
+        '/register': (context) => RegisterForm(),
+      },
     );
   }
 }
 
-//HomePage constructor class extending the "stateful widget" - i.e. the app & its states
 class HomePage extends StatefulWidget {
-  //instantiates HomePage object passing title
-  HomePage({Key key, this.title}) : super(key: key);
-
-  //HomePage attribute title
-  final String title;
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
+// StatelessWidget is @immutable => requires final attributes
 class _HomePageState extends State<HomePage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final TextStyle textStyle =
+      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  // This widget is the root of your application.
+  // @override overrides default app build method
+  // returns Scaffold obj containing main page with button choices
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Home'),
       ),
       body: Center(
         child: Container(
           color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Welcome to Fundare!',
-                  style: Theme.of(context).textTheme.display1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 155.0,
+                child: Image.asset(
+                  'assets/logo.png',
+                  fit: BoxFit.contain,
                 ),
-                Text('Helping You Find Your Vehicle',
-                    style: style.copyWith(
-                        color: Colors.black, fontWeight: FontWeight.w100)),
-                SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    'assets/logo.png',
-                    fit: BoxFit.contain,
-                  ),
-                )
-              ],
-            ),
+              ),
+              RaisedButton(
+                child: Text('Login'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+              ),
+              RaisedButton(
+                child: Text('Register'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -77,12 +79,13 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  @override
+  final TextStyle textStyle =
+      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   Widget build(BuildContext context) {
+    //form attribute formkey to validate the form
     final emailField = TextField(
       obscureText: false,
-      style: style,
+      style: textStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: 'Email',
@@ -91,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
     );
     final passwordField = TextField(
       obscureText: true,
-      style: style,
+      style: textStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: 'Password',
@@ -101,19 +104,22 @@ class _LoginFormState extends State<LoginForm> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.amber,
+      color: Colors.blueGrey,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {},
         child: Text('Login',
             textAlign: TextAlign.center,
-            style: style.copyWith(
+            style: textStyle.copyWith(
                 color: Colors.black, fontWeight: FontWeight.w400)),
       ),
     );
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
       body: Center(
         child: Container(
           color: Colors.white,
@@ -123,17 +129,109 @@ class _LoginFormState extends State<LoginForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 45.0),
+                SizedBox(height: 15.0),
                 emailField,
-                SizedBox(height: 25.0),
+                SizedBox(height: 15.0),
                 passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
+                SizedBox(height: 15.0),
                 loginButon,
-                SizedBox(
-                  height: 15.0,
-                ),
+                SizedBox(height: 15.0),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RegisterForm extends StatefulWidget {
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  //form attribute formkey to validate the form
+  // final _formKey = GlobalKey<FormState>();
+  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  //
+  @override
+  Widget build(BuildContext context) {
+    final nameField = TextField(
+      obscureText: false,
+      style: textStyle,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: 'Name',
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final emailField = TextField(
+      obscureText: false,
+      style: textStyle,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: 'Email',
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final passwordField = TextField(
+      obscureText: true,
+      style: textStyle,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: 'Password',
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final passwordValidate = TextField(
+      obscureText: true,
+      style: textStyle,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: 'Password',
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final registerButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.blueGrey,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text('Register',
+            textAlign: TextAlign.center,
+            style: textStyle.copyWith(
+                color: Colors.black, fontWeight: FontWeight.w400)),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
+      body: Center(
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 15.0),
+                nameField,
+                SizedBox(height: 15.0),
+                emailField,
+                SizedBox(height: 15.0),
+                passwordField,
+                SizedBox(height: 15.0),
+                passwordValidate,
+                SizedBox(height: 15.0),
+                registerButton,
+                SizedBox(height: 15.0),
               ],
             ),
           ),
