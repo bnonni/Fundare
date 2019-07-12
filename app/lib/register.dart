@@ -122,7 +122,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                                       title: nameInputController
                                                               .text +
                                                           "'s Tasks",
-                                                      user_id: currentUser.uid,
+                                                      uid: currentUser.uid,
                                                     )),
                                             (_) => false),
                                         nameInputController.clear(),

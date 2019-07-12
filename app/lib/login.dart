@@ -94,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                                                   title: "Welcome " +
                                                       result['name'] +
                                                       "!",
-                                                  user_id: currentUser.uid,
+                                                  uid: currentUser.uid,
                                                 ))))
                                 .catchError((err) => print(err)))
                             .catchError((err) => print(err));
