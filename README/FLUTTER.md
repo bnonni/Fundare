@@ -39,13 +39,13 @@
         ```
         sudo gem install cocoapods
         ```
-      - Then, visit the CocoaPods link above, and follow the instructions closely. 
+      - Visit the CocoaPods link above, and follow the instructions closely. 
    
    * [Xcode Developer Tools](https://developer.apple.com/xcode/)
       - Open terminal, and run:
-        ```
-        xcode-select --install
-        ```
+      ```
+      xcode-select --install
+      ```
 
 2. Download Flutter SDK => (Click to Download)[https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.7.8+hotfix.3-stable.zip]
 
