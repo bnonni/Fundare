@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'home.dart';
 
 final TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -105,32 +103,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               .createUserWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
-                              .then((currentUser) => Firestore.instance
-                                  .collection('register')
-                                  .document(currentUser.uid)
-                                  .setData({
-                                    'user_id': currentUser.uid,
-                                    'name': nameInputController.text,
-                                    'email': emailInputController.text,
-                                    "account_id": i += 1
-                                  })
-                                  .then((result) => {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => HomePage(
-                                                      title: nameInputController
-                                                              .text +
-                                                          "'s Tasks",
-                                                      uid: currentUser.uid,
-                                                    )),
-                                            (_) => false),
-                                        nameInputController.clear(),
-                                        emailInputController.clear(),
-                                        pwdInputController.clear(),
-                                        confirmPwdInputController.clear()
-                                      })
-                                  .catchError((err) => print(err)))
+                              .then((currentUser) => {print(currentUser)})
                               .catchError((err) => print(err));
                         } else {
                           showDialog(

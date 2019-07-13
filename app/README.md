@@ -8,7 +8,7 @@ How to Install Flutter
 
 How to Install Fundare Flutter
 1. Install Flutter & Dependencies 
-   - See [How to Install Flutter][./README/FLUTTER.md]
+   - See [How to Install Flutter][../assets/README/FLUTTER.md]
 
 3. Clone this repo to your machine.
    ```

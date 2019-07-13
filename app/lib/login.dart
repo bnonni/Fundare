@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'home.dart';
 
 final TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -82,21 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                             .signInWithEmailAndPassword(
                                 email: emailInputController.text,
                                 password: pwdInputController.text)
-                            .then((currentUser) => Firestore.instance
-                                .collection('users')
-                                .document(currentUser.uid)
-                                .get()
-                                .then((DocumentSnapshot result) =>
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomePage(
-                                                  title: "Welcome " +
-                                                      result['name'] +
-                                                      "!",
-                                                  uid: currentUser.uid,
-                                                ))))
-                                .catchError((err) => print(err)))
+                            .then((e) => {print("Sign In Success")})
                             .catchError((err) => print(err));
                       }
                     },
