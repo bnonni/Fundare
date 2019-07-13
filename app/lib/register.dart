@@ -11,14 +11,16 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
-  TextEditingController nameInputController;
+  TextEditingController firstNameInputController;
+  TextEditingController lastNameInputController;
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
 
   @override
   initState() {
-    nameInputController = new TextEditingController();
+    firstNameInputController = new TextEditingController();
+    lastNameInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     confirmPwdInputController = new TextEditingController();
@@ -29,17 +31,50 @@ class _RegisterFormState extends State<RegisterForm> {
     Pattern pattern = r'^[a-zA-Z0-9\._%+-]+@[A-Za-z0-9.-]+[\.A-Za-z]{2,3}$';
     RegExp email = new RegExp(pattern);
     if (!email.hasMatch(value)) {
-      return 'Email format is invalid';
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Email Format.'),
+              content: Text(
+                  'Email must follow standard format:\n-username@domain.ext\n-e.g. fundareuser@gmail.com'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
     } else {
       return null;
     }
   }
 
+//T3stword!
   String pwdValidator(String value) {
     Pattern pattern = r'^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,})$';
     RegExp password = new RegExp(pattern);
     if (!password.hasMatch(value)) {
-      return 'Invalid Password. Requirements: at least\n8 characters long\n1 Uppercase letter\n1 number\n1 special character.';
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Password.'),
+              content: Text(
+                  '-Min 8 characters long\n-1 Uppercase letter\n-1 number\n-1 special character.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
     } else {
       return null;
     }
@@ -60,12 +95,17 @@ class _RegisterFormState extends State<RegisterForm> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Full Name*', hintText: 'First Last'),
-                    controller: nameInputController,
+                        labelText: 'First Name*', hintText: 'First Last'),
+                    controller: firstNameInputController,
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'Last Name*', hintText: 'First Last'),
+                    controller: lastNameInputController,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Email*',
                         hintText: 'emailaddress@domain.com'),
                     controller: emailInputController,
                     keyboardType: TextInputType.emailAddress,
@@ -73,14 +113,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Password', hintText: '********'),
+                        labelText: 'Password*', hintText: '********'),
                     controller: pwdInputController,
                     obscureText: true,
                     validator: pwdValidator,
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Confirm Password', hintText: '********'),
+                        labelText: 'Confirm Password*', hintText: '********'),
                     controller: confirmPwdInputController,
                     obscureText: true,
                     validator: pwdValidator,
@@ -99,18 +139,16 @@ class _RegisterFormState extends State<RegisterForm> {
                                   password: pwdInputController.text)
                               .then((currentUser) => Firestore.instance
                                   .collection('register')
-                                  .document(currentUser.uid)
+                                  .document(firstNameInputController.text +
+                                      "_" +
+                                      lastNameInputController.text)
                                   .setData({
-                                    currentUser.uid: {
-                                      "uid_data": [
-                                        {
-                                          "user": currentUser.uid,
-                                          "email": emailInputController.text,
-                                          "name": nameInputController.text,
-                                          "password": pwdInputController.text,
-                                        }
-                                      ]
-                                    }
+                                    currentUser.uid: [
+                                      {
+                                        "email": emailInputController.text,
+                                        "password": pwdInputController.text,
+                                      }
+                                    ]
                                   })
                                   .then((result) => {
                                         Navigator.pushAndRemoveUntil(
@@ -118,13 +156,13 @@ class _RegisterFormState extends State<RegisterForm> {
                                             MaterialPageRoute(
                                                 builder: (context) => UserPage(
                                                       title: "Welcome " +
-                                                          nameInputController
+                                                          firstNameInputController
                                                               .text +
                                                           "!",
                                                       uid: currentUser.uid,
                                                     )),
                                             (_) => false),
-                                        nameInputController.clear(),
+                                        lastNameInputController.clear(),
                                         emailInputController.clear(),
                                         pwdInputController.clear(),
                                         confirmPwdInputController.clear()
@@ -142,7 +180,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     FlatButton(
                                       child: Text('Close'),
                                       onPressed: () {
-                                        Navigator.of(context).pop();
+                                        Navigator.pop(context);
                                       },
                                     )
                                   ],

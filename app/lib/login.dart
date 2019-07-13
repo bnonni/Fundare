@@ -11,6 +11,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  TextEditingController nameInputController;
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   FirebaseUser currentUser;
@@ -19,6 +20,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   initState() {
+    nameInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     super.initState();
@@ -58,6 +60,11 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
+                        labelText: 'Full Name*', hintText: 'First Last'),
+                    controller: nameInputController,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
                         labelText: 'Email',
                         hintText: 'emailaddress@domain.com'),
                     controller: emailInputController,
@@ -83,16 +90,17 @@ class _LoginFormState extends State<LoginForm> {
                                 password: pwdInputController.text)
                             .then((currentUser) => Firestore.instance
                                 .collection('register')
-                                .document(currentUser.uid)
-                                // .collection("/register/uid_data")
+                                .document(nameInputController.text +
+                                    '/' +
+                                    currentUser.uid)
                                 .get()
                                 .then((DocumentSnapshot result) =>
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => UserPage(
-                                                  title: result["fname"] +
-                                                      "'s Tasks",
+                                                  title: "Welcome " +
+                                                      result["name"],
                                                   uid: currentUser.uid,
                                                 ))))
                                 .catchError((err) => print(err)))
@@ -113,27 +121,22 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 /*
-class User {
+class CurrentUser {
   String email;
   String name;
   String password;
+  String uid;
 
-  ItemCount.fromMap(Map<dynamic, dynamic> data)
-      : itemType = data['itemType'],
-        count = data['count'];
-}
-
-class UsersMap {
-  UsersMap.fromMap(Map<dynamic, dynamic> data)
-      : email = data["email"],
-        name = data["name"],
-        password = data["password"];
+  UserRecord.fromMap(Map<dynamic, dynamic> data)
+      : email = data['email'],
+        name = data['name'],
+        password = data['password'],
+        uid = data['uid'];
 }
 
 class UserRecord {
-  final i = 0;
   String documentID;
-  List<User> users = new List<User>();
+  List<CurrentUser> itemCounts = new List<CurrentUser>();
 
   UserRecord.fromSnapshot(DocumentSnapshot snapshot)
       : documentID = snapshot.documentID,
@@ -144,15 +147,4 @@ class UserRecord {
 
   static fromMap(snapshot) {}
 }
-
-StreamBuilder<GameRecord>(
-                    stream: getGame(),
-                    builder: (BuildContext c, AsyncSnapshot<GameRecord> data) {
-                      if (data?.data == null) return Text("Error");
-
-                      GameRecord r = data.data;
-
-                      return Text("${r.creationTimestamp} + ${r.name}");
-                    },
-                  ),
 */

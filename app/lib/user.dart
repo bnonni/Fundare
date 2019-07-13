@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class UserPage extends StatefulWidget {
   UserPage({Key key, this.title, this.uid}) : super(key: key);
@@ -16,38 +17,22 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome to Fundare '),
+        title: Text('User Page'),
       ),
       body: Container(
         color: Colors.white,
         padding: const EdgeInsets.all(75.0),
-        child: SafeArea(
-          child: Column(
+        child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 155.0,
-                child: Image.asset(
-                  'assets/logo.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
               RaisedButton(
-                child: Text('Login'),
+                child: Text('Home'),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushNamed(context, '/');
                 },
               ),
-              RaisedButton(
-                child: Text('Register'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-              ),
-            ],
-          ),
-        ),
+            ]),
       ),
     );
   }
