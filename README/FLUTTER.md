@@ -1,4 +1,4 @@
-#How to Install Flutter (Mac)
+# How to Install Flutter (Mac)
 
 1. Install dependencies - [Mac](https://flutter.dev/docs/get-started/install/macos)
    a. Ruby - Pre-installed on Mac
