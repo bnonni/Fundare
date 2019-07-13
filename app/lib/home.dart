@@ -20,14 +20,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Colors.white,
+        width: 370.0,
         padding: const EdgeInsets.all(50.0),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("MedWallet", style: TextStyle(fontSize: 55.0)),
+              Text("Fundare", style: TextStyle(fontSize: 50.0)),
               SizedBox(
-                width: 100.0,
+                width: 175.0,
                 child: Image.asset(
                   'assets/logo.png',
                   fit: BoxFit.contain,

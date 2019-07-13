@@ -13,7 +13,7 @@ class FundareApp extends StatelessWidget {
     return MaterialApp(
       title: 'com.fundare.fundareapp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
