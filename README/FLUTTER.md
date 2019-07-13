@@ -1,33 +1,30 @@
 # How to Install Flutter (Mac)
 
 1. Install dependencies for [Mac](https://flutter.dev/docs/get-started/install/macos) 
-   * Ruby - Pre-installed on Mac
+   * Ruby => Pre-installed on Mac
         Open a terminal program, and run:
          ```sh
          which ruby
          ```
         If you get a similar output, you're good to go!
          ```sh
-         [computer-name:~ username$ ruby -v
-          ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]
+         computer-name:~ username$ ruby -v
+         ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]
          ```
    
-   * [Homebrew](https://brew.sh/) - Open terminal, and run:
+   * [Homebrew](https://brew.sh/) => Open terminal, and run:
         ```sh
         sudo ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         ```
       - Ensure you have full admin access to your computer (if you don't know for sure that you do, you probably don't). 
       - To enable/check this, go [here](http://osxdaily.com/2016/11/01/convert-user-to-admin-account-command-line-mac/).
    
-   * bash 
-      - [What is Bash, you ask?](https://www.github.com/bnonni/UNIX) - only the best thing since sliced break ;)
-      - Open terminal, and run:
+   * [bash](https://www.github.com/bnonni/UNIX) => Open terminal, and run:
         ```sh
         brew install bash
         ```
    
-   * [curl](https://curl.haxx.se/)
-      - Open terminal, and run:
+   * [curl](https://curl.haxx.se/) => Open terminal, and run:
         ```sh
         brew install curl
         ```
