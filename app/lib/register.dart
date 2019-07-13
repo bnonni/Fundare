@@ -60,16 +60,10 @@ class _RegisterFormState extends State<RegisterForm> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Full Name*',
-                        hintText: 'John Doe or Jane Doe'),
-                    controller: nameInputController,
-                    validator: (value) {
-                      if (value.length < 1) {
-                        return 'Please enter a valid first name.\nMust include at least 1 character.';
-                      }
-                    },
-                  ),
+                      decoration: InputDecoration(
+                          labelText: 'Full Name*',
+                          hintText: 'John Doe or Jane Doe'),
+                      controller: nameInputController),
                   TextFormField(
                     decoration: InputDecoration(
                         labelText: 'Email', hintText: 'john.doe@gmail.com'),
