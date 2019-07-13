@@ -139,16 +139,9 @@ class _RegisterFormState extends State<RegisterForm> {
                                   password: pwdInputController.text)
                               .then((currentUser) => Firestore.instance
                                   .collection('register')
-                                  .document(firstNameInputController.text +
-                                      "_" +
-                                      lastNameInputController.text)
+                                  .document(emailInputController.text)
                                   .setData({
-                                    currentUser.uid: [
-                                      {
-                                        "email": emailInputController.text,
-                                        "password": pwdInputController.text,
-                                      }
-                                    ]
+                                    "password": pwdInputController.text,
                                   })
                                   .then((result) => {
                                         Navigator.pushAndRemoveUntil(

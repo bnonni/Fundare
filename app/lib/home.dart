@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 width: 100.0,
                 child: Image.asset(
-                  'assets/brain.png',
+                  'assets/logo.png',
                   fit: BoxFit.contain,
                 ),
               ),
