@@ -1,10 +1,10 @@
-# Fundare App in Flutter
+# Fundare App in Dart/Flutter
 
-Fundare: Helping Lost Vehicles Find the Way Home. Built using [Flutter.io](https://flutter.io)
+## Fundare: Helping Lost Vehicles Find the Way Home. Built using [Flutter.io](https://flutter.io)
 
-## Fundare  Dev - Getting Started 
+Fundare Flutter Development - Getting Started 
 
-How to Install Fundare Flutter
+### How to Install Fundare_Flutter
 1. Install Flutter & Dependencies 
    - See [How to Install Flutter](./README/FLUTTER.md)
 
