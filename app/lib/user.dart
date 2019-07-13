@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title, this.uid}) : super(key: key);
+class UserPage extends StatefulWidget {
+  UserPage({Key key, this.title, this.uid}) : super(key: key);
   final String title;
-  final double uid;
+  final String uid;
   @override
-  _HomePageState createState() => _HomePageState();
+  _UserPageState createState() => _UserPageState();
 }
 
 // StatelessWidget is @immutable => requires final attributes
-class _HomePageState extends State<HomePage> {
+class _UserPageState extends State<UserPage> {
   // @override overrides default app build method
   // returns Scaffold obj containing main page with button choices
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Welcome to Fundare '),
       ),
       body: Container(
         color: Colors.white,

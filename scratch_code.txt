@@ -262,22 +262,7 @@ class _RegisterFormState extends State<RegisterForm> {
 */
 
 /*FirebaseAuth.instance
-                  FirebaseAuth.instance
-                      .signInAnonymously()
-                      .then((result) => Navigator.pushNamed(context, '/login'))
-                      .catchError((err) => print(err));
-                      .signInAnonymously()
-                      .then(
-                          (result) => Navigator.pushNamed(context, '/register'))
-                      .catchError((err) => print(err));
-              StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection('users')
-                      .document(widget.uid)
-                      .collection('users')
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {}),
+                  
                       
        */
 

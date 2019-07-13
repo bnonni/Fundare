@@ -1,7 +1,7 @@
+import 'package:app/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-final TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterForm extends StatefulWidget {
   RegisterForm({Key key}) : super(key: key);
@@ -15,7 +15,6 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
-  var i;
 
   @override
   initState() {
@@ -60,13 +59,14 @@ class _RegisterFormState extends State<RegisterForm> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Full Name*',
-                          hintText: 'John Doe or Jane Doe'),
-                      controller: nameInputController),
+                    decoration: InputDecoration(
+                        labelText: 'Full Name*', hintText: 'First Last'),
+                    controller: nameInputController,
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Email', hintText: 'john.doe@gmail.com'),
+                        labelText: 'Email',
+                        hintText: 'emailaddress@domain.com'),
                     controller: emailInputController,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
@@ -97,7 +97,39 @@ class _RegisterFormState extends State<RegisterForm> {
                               .createUserWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
-                              .then((currentUser) => {print(currentUser)})
+                              .then((currentUser) => Firestore.instance
+                                  .collection('register')
+                                  .document(currentUser.uid)
+                                  .setData({
+                                    currentUser.uid: {
+                                      "uid_data": [
+                                        {
+                                          "user": currentUser.uid,
+                                          "email": emailInputController.text,
+                                          "name": nameInputController.text,
+                                          "password": pwdInputController.text,
+                                        }
+                                      ]
+                                    }
+                                  })
+                                  .then((result) => {
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => UserPage(
+                                                      title: "Welcome " +
+                                                          nameInputController
+                                                              .text +
+                                                          "!",
+                                                      uid: currentUser.uid,
+                                                    )),
+                                            (_) => false),
+                                        nameInputController.clear(),
+                                        emailInputController.clear(),
+                                        pwdInputController.clear(),
+                                        confirmPwdInputController.clear()
+                                      })
+                                  .catchError((err) => print(err)))
                               .catchError((err) => print(err));
                         } else {
                           showDialog(
@@ -105,7 +137,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('Error'),
-                                  content: Text('The passwords do not match'),
+                                  content: Text('The passwords do not match.'),
                                   actions: <Widget>[
                                     FlatButton(
                                       child: Text('Close'),

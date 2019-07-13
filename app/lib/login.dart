@@ -1,7 +1,7 @@
+import 'package:app/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-final TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key key}) : super(key: key);
@@ -28,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
     Pattern pattern = r'^[a-zA-Z0-9\._%+-]+@[A-Za-z0-9.-]+[\.A-Za-z]{2,3}$';
     RegExp email = new RegExp(pattern);
     if (!email.hasMatch(value)) {
-      return 'Email format is invalid. Please ensure you follow standard formatting.\n i.e. username@domain.ext\n e.g. fundareuser@gmail.com';
+      return 'Email format is invalid.\ne.g. username@domain.ext\n';
     } else {
       return null;
     }
@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
     Pattern pattern = r'^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,})$';
     RegExp password = new RegExp(pattern);
     if (!password.hasMatch(value)) {
-      return 'Invalid Password. Requirements: at least\n8 characters long\n1 Uppercase letter\n1 number\n1 special character.';
+      return 'Password Invalid.';
     } else {
       return null;
     }
@@ -58,7 +58,8 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
-                        labelText: 'Email', hintText: 'first.last@gmail.com'),
+                        labelText: 'Email',
+                        hintText: 'emailaddress@domain.com'),
                     controller: emailInputController,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
@@ -80,7 +81,21 @@ class _LoginFormState extends State<LoginForm> {
                             .signInWithEmailAndPassword(
                                 email: emailInputController.text,
                                 password: pwdInputController.text)
-                            .then((e) => {print("Sign In Success")})
+                            .then((currentUser) => Firestore.instance
+                                .collection('register')
+                                .document(currentUser.uid)
+                                // .collection("/register/uid_data")
+                                .get()
+                                .then((DocumentSnapshot result) =>
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => UserPage(
+                                                  title: result["fname"] +
+                                                      "'s Tasks",
+                                                  uid: currentUser.uid,
+                                                ))))
+                                .catchError((err) => print(err)))
                             .catchError((err) => print(err));
                       }
                     },
@@ -97,3 +112,47 @@ class _LoginFormState extends State<LoginForm> {
             ))));
   }
 }
+/*
+class User {
+  String email;
+  String name;
+  String password;
+
+  ItemCount.fromMap(Map<dynamic, dynamic> data)
+      : itemType = data['itemType'],
+        count = data['count'];
+}
+
+class UsersMap {
+  UsersMap.fromMap(Map<dynamic, dynamic> data)
+      : email = data["email"],
+        name = data["name"],
+        password = data["password"];
+}
+
+class UserRecord {
+  final i = 0;
+  String documentID;
+  List<User> users = new List<User>();
+
+  UserRecord.fromSnapshot(DocumentSnapshot snapshot)
+      : documentID = snapshot.documentID,
+        users = snapshot['users'],
+        user_data = snapshot['itemCount'].map<ItemCount>((item) {
+          return ItemCount.fromMap(item);
+        }).toList();
+
+  static fromMap(snapshot) {}
+}
+
+StreamBuilder<GameRecord>(
+                    stream: getGame(),
+                    builder: (BuildContext c, AsyncSnapshot<GameRecord> data) {
+                      if (data?.data == null) return Text("Error");
+
+                      GameRecord r = data.data;
+
+                      return Text("${r.creationTimestamp} + ${r.name}");
+                    },
+                  ),
+*/
