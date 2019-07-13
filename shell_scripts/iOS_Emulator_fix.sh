@@ -1,3 +1,4 @@
+#!bin/bash
 brew update;
 brew uninstall --ignore-dependencies libimobiledevice;
 brew uninstall --ignore-dependencies usbmuxd;

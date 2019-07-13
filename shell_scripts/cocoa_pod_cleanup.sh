@@ -1,3 +1,4 @@
+#!bin/bash
 sudo gem install cocoapods-deintegrate cocoapods-clean;
 pod deintegrate;
 pod clean;
