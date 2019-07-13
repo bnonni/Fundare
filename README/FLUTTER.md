@@ -3,7 +3,7 @@
 1. Install dependencies for [Mac](https://flutter.dev/docs/get-started/install/macos) 
    * Ruby => Pre-installed on Mac
         - Open a terminal program, and run:
-         ```sh
+         ```
          which ruby
          ```
         - If you get a similar output, you're good to go!
