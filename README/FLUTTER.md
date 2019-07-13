@@ -2,11 +2,11 @@
 
 1. Install dependencies for [Mac](https://flutter.dev/docs/get-started/install/macos) 
    * Ruby => Pre-installed on Mac
-        Open a terminal program, and run:
+        - Open a terminal program, and run:
          ```sh
          which ruby
          ```
-        If you get a similar output, you're good to go!
+        - If you get a similar output, you're good to go!
          ```sh
          computer-name:~ username$ ruby -v
          ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]
