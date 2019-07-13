@@ -8,8 +8,7 @@ Technical Specifications
   * Built Using Cross Device Framework - Flutter.io
   * Language: Dart
   * Database: Firebase Cloud Database, Firestore
-  * Google Location API
-  * Google Elevation API
+  * APIs: Google Location, Google Elevation
 
 ## Fundare: Helping Lost Vehicles Find the Way Home. Built using [Flutter.io](https://flutter.io)
 
