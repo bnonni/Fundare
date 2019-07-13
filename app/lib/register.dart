@@ -37,10 +37,10 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   String pwdValidator(String value) {
-    Pattern pattern = r'^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})$';
+    Pattern pattern = r'^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,})$';
     RegExp password = new RegExp(pattern);
     if (!password.hasMatch(value)) {
-      return 'Password must be longer than 8 characters.\n Must include at least 1 Uppercase letter, 1 number and 1 special character.';
+      return 'Invalid Password. Requirements: at least\n8 characters long\n1 Uppercase letter\n1 number\n1 special character.';
     } else {
       return null;
     }
