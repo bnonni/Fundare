@@ -1,4 +1,15 @@
-# Fundare App in Dart/Flutter
+# Fundare 
+
+Description & Purpose: 
+  * Fundare helps users find their vehicles if they've forgotten where they've parked
+  * The app/service works in parking lots or parking decks
+
+Technical Specifications
+  * Built Using Cross Device Framework - Flutter.io
+  * Language: Dart
+  * Database: Firebase Cloud Database, Firestore
+  * Google Location API
+  * Google Elevation API
 
 ## Fundare: Helping Lost Vehicles Find the Way Home. Built using [Flutter.io](https://flutter.io)
 
