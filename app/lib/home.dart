@@ -20,26 +20,28 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Colors.white,
-        padding: const EdgeInsets.all(75.0),
+        padding: const EdgeInsets.all(50.0),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text("MedWallet", style: TextStyle(fontSize: 55.0)),
               SizedBox(
-                height: 155.0,
+                width: 100.0,
                 child: Image.asset(
-                  'assets/logo.png',
+                  'assets/brain.png',
                   fit: BoxFit.contain,
                 ),
               ),
               RaisedButton(
+                padding: const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0),
                 child: Text('Login'),
                 onPressed: () {
                   Navigator.pushNamed(context, '/login');
                 },
               ),
               RaisedButton(
+                padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
                 child: Text('Register'),
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
