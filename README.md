@@ -18,33 +18,28 @@ Fundare Flutter Development - Getting Started
 1. Install Flutter & Dependencies 
    - See [How to Install Flutter](./README/FLUTTER.md)
 
-3. Clone this repo to your machine.
+2. Clone this repo to your machine.
    ```
    git clone https://github.com/bnonni/Fundare_Flutter
    ```
 
-2. cd into this repo via Terminal, and run the following commands:
+3. cd into Fundare_Flutter via Terminal, and run the following commands:
    ```
-   cd Fundare_Flutter/app/ios
-   pod init
-   ```
-   - Open the newly created Podfile, and add:
-   ```
-   pod 'Firebase/Core'
-   ```
-   - Ensure its in the Podfile under the comment line # Pods for Runner, like this:
-   ```
-   # Pods for Runner
-   pod 'Firebase/Core'
+   cd app_fundare/
+   flutter build ios
    ```
 
-3. In terminal from the Fundare_Flutter/app/ios foler, run:
+3. Either connect an iPhone directly to your computer or run the iOS simulator, and run the app:
+  - With an iPhone connected to your computer, open Xcode and navigate to "Window > Devices & Simulators." Uncheck the "Connect via Network" option:
+  ![Connect via Network](./README/Xcode_disable.png)
+  - Disable your phone's hotspot, if one is enabled. 
+  - Disable wifi on your iPhone.
+  - Run the following command:
   ```
-  pod install
+  flutter run
   ```
-  - Then, from that same folder, run:
+  - To use iOS Simulator app, simply run:
   ```
-  cd ../
   open -a Simulator
   flutter run
   ```

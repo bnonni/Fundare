@@ -1,3 +1,3 @@
 #!bin/bash
-cd app;
+cd app_fundare;
 flutter run;
