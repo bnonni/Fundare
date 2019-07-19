@@ -4,6 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import './user_services/google_map_services.dart'; // new
+import './user_services/database_services.dart'; // new
+import './user_services/poly_services.dart'; // new
 
 class UserPage extends StatefulWidget {
   UserPage({Key key, this.uid}) : super(key: key);
@@ -21,6 +24,7 @@ class _UserPageState extends State<UserPage> {
   FirebaseUser currentUser;
   DateTime now;
   Set<Marker> carMarker = Set<Marker>();
+  Set<Polyline> routePolyline = Set<Polyline>(); // new
   GoogleMapController mapController;
 
   void initState() {
@@ -29,6 +33,9 @@ class _UserPageState extends State<UserPage> {
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         currentLocation = currloc;
+        print(currentLocation.longitude);
+        print(currentLocation.latitude);
+        print(currentLocation.altitude);
         mapToggle = true;
         //get the time of the
         now = new DateTime.now();
@@ -37,7 +44,10 @@ class _UserPageState extends State<UserPage> {
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude);
         _firestore.collection('user_data').document(currentUser.uid).setData({
-          "onLoad_location": [userLocation.data]
+          "onLoad_location": {
+            "altitude": currentLocation.altitude,
+            "userLocation": userLocation.data,
+          }
         }, merge: true);
         print(userLocation.longitude);
         print(userLocation.latitude);
@@ -46,15 +56,19 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
-  void getLocationStoreLocation(now, curr) {
+  void getLocationStoreLocation(now, currentLocation) {
     GeoFirePoint userLocation = geo.point(
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude);
     _firestore.collection('user_data').document(currentUser.uid).setData({
-      'onMarked_location': [userLocation.data]
+      'onMarked_location': {
+        "altitude": currentLocation.altitude,
+        "userLocation": userLocation.data,
+      }
     }, merge: true);
     print(userLocation.longitude);
     print(userLocation.latitude);
+    print(currentLocation.altitude);
     print(now);
   }
 
@@ -86,13 +100,14 @@ class _UserPageState extends State<UserPage> {
                           zoom: 10.0),
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
-                      markers: carMarker)
+                      markers: carMarker,
+                      polylines: routePolyline)
                   : Center(
                       child: Text(
                       'Loading.. Please wait..',
                       style: TextStyle(fontSize: 20.0),
                     ))),
-          SizedBox(height: 25.0),
+          SizedBox(height: 5.0),
           RaisedButton(
             child: Text('Mark my Car!',
                 style: TextStyle(
@@ -102,15 +117,26 @@ class _UserPageState extends State<UserPage> {
             color: Theme.of(context).primaryColor,
             onPressed: onAddMarkerButtonPressed,
           ),
-          RaisedButton(
-            child: Text('Logout',
+          SizedBox(height: 5.0), // new below
+          FlatButton(
+            child: Text('Go to Deck!',
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold)),
             color: Theme.of(context).primaryColor,
-            onPressed: onAddMarkerButtonPressed,
-          )
+            onPressed: onGoToDeckButtonPressed,
+          ),
+          RaisedButton(
+              child: Text('Logout',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
+              color: Theme.of(context).primaryColor,
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/');
+              }),
         ]));
   }
 
@@ -142,6 +168,59 @@ class _UserPageState extends State<UserPage> {
           ));
         });
       });
+    });
+  }
+
+  void onGoToDeckButtonPressed() {
+    // new
+    setState(() {
+      var carLocation;
+      routePolyline.clear();
+      Geolocator().getCurrentPosition().then((currloc) {
+        // get user's current location below
+        currentLocation = currloc;
+        DatabaseServices().getCarLocation().then((carloc) {
+          // get car location from database, has fields latitude, longitude, altitude
+          carLocation = carloc;
+          GoogleMapsServices()
+              .getRouteCoordinates(
+                  LatLng(currentLocation.latitude, currentLocation.longitude),
+                  LatLng(carLocation.latitude, carLocation.longitude))
+              .then((routeString) {
+            // get polyline points from Google
+            createRoute(routeString);
+            // update carMarker below
+            carMarker.clear();
+            carMarker.add(Marker(
+              markerId: MarkerId('usercar'),
+              position: LatLng(carLocation.latitude, carLocation.longitude),
+              infoWindow: InfoWindow(
+                  title: 'My Car',
+                  snippet: 'latitude: ' +
+                      carLocation.latitude.toString() +
+                      ',' +
+                      'longitude: ' +
+                      carLocation.longitude.toString() +
+                      ',' +
+                      'altitude: ' +
+                      carLocation.altitude.toString()),
+              icon: BitmapDescriptor.defaultMarker,
+            ));
+          });
+        });
+      });
+    });
+  }
+
+  void createRoute(String encodedPoly) {
+    // new
+    setState(() {
+      routePolyline.clear();
+      routePolyline.add(Polyline(
+          polylineId: PolylineId('myRoute'),
+          width: 5,
+          points: convertToLatLng(decodePoly(encodedPoly)),
+          color: Colors.black));
     });
   }
 

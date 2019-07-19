@@ -49,8 +49,6 @@ class _LoginFormState extends State<LoginForm> {
         ),
         body: Column(children: <Widget>[
           Container(
-              height: MediaQuery.of(context).size.height - 280.0,
-              width: double.infinity,
               padding: const EdgeInsets.all(20.0),
               child: SingleChildScrollView(
                   child: Form(
