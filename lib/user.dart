@@ -18,23 +18,22 @@ class UserPage extends StatefulWidget {
 
 // StatelessWidget is @immutable => requires final attributes
 class _UserPageState extends State<UserPage> {
+  bool mapToggle = false;
+  bool altitudeToggle = false;
+  Set<Marker> carMarker = Set<Marker>();
+  Set<Polyline> routePolyline = Set<Polyline>(); // new
+  var myGeolocator = Geolocator();
   var currentLocation;
-  DateTime now;
+  double carLat;
+  double carLong;
+  double carAlt;
+  double arriveDeckAlt;
+  double currentAlt;
+  GoogleMapController mapController;
+  StreamSubscription<double> altitudeStream;
   final Geoflutterfire geo = Geoflutterfire();
   final Firestore _firestore = Firestore.instance;
   FirebaseUser currentUser;
-  GoogleMapController mapController;
-  bool mapToggle = false;
-  Set<Marker> carMarker = Set<Marker>();
-  Set<Polyline> routePolyline = Set<Polyline>();
-  StreamSubscription<double> altitudeStream;
-  bool altitudeToggle = false;
-  var myGeolocator = Geolocator();
-  var locationOptions =
-      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 1);
-  double arriveDeckAlt;
-  double currentAlt;
-  double carAlt;
 
   void initState() {
     this.getCurrentUser();
@@ -68,15 +67,16 @@ class _UserPageState extends State<UserPage> {
   void storeCarLocation(carLocation) {
     GeoFirePoint carloc = geo.point(
         latitude: carLocation.latitude, longitude: carLocation.longitude);
+    print(carloc);
     _firestore
         .collection('user_data')
         .document(currentUser.uid)
         .collection('onMarked_location')
         .document('carLocation')
         .setData({
-      "altitude": carLocation.altitude,
-      "latitude": carloc.latitude,
-      "longitude": carloc.longitude,
+      "altitude": 267.9001121520996,
+      "latitude": 33.753891,
+      "longitude": -84.389412,
     }, merge: true);
     // print(carLocation.longitude);
     // print(carLocation.latitude);
@@ -185,22 +185,6 @@ class _UserPageState extends State<UserPage> {
                   ? Center(
                       child: CustomPaint(
                           size: Size(100, 400),
-                          //   child: StreamBuilder(
-                          //     stream: stream,
-                          //     initialData: initialData,
-                          //     builder:
-                          //         (BuildContext context, AsyncSnapshot snapshot) {
-                          //       return Container(
-                          //         child: child,
-                          //       );
-                          //     },
-                          //   ), _firestore
-                          // .collection('user_data')
-                          // .document(currentUser.uid)
-                          // .collection('onMarked_location')
-                          // .document('carLocation')
-                          // .get()
-                          // .then((result) {})
                           painter:
                               MyPainter(carAlt, currentAlt, arriveDeckAlt)))
                   : Center()),
@@ -240,7 +224,6 @@ class _UserPageState extends State<UserPage> {
       myGeolocator.getCurrentPosition().then((currloc) {
         setState(() {
           currentLocation = currloc;
-          now = new DateTime.now();
           storeCarLocation(currentLocation);
           mapToggle = true;
           carMarker.clear();
@@ -267,12 +250,11 @@ class _UserPageState extends State<UserPage> {
   void onGoToDeckButtonPressed() {
     setState(() {
       // get car location from database, has fields latitude, longitude, altitude
-      double carLat, carLong, carAlt;
       _firestore
           .collection('user_data')
           .document(currentUser.uid)
           .collection('onMarked_location')
-          .document('carLocation')
+          .document('testCarLocation')
           .get()
           .then((result) {
         carLat = result.data['latitude'];
@@ -299,7 +281,7 @@ class _UserPageState extends State<UserPage> {
                   snippet: '  Latitude: ' +
                       carLat.toString().substring(0, 5) +
                       ',\nLongitude: ' +
-                      carLong.toString().substring(0, 5) +
+                      carLong.toString().substring(0, 6) +
                       ',\nAltitude: ' +
                       carAlt.toString().substring(0, 6)),
               icon: BitmapDescriptor.defaultMarker,
@@ -312,14 +294,14 @@ class _UserPageState extends State<UserPage> {
 
   void onGuideInDeckButtonPressed() {
     double carLat, carLong, carAlt;
-    // var locationOptions =
-    //     LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 1);
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 1);
     // get car location from database: latitude, longitude, altitude
     _firestore
         .collection('user_data')
         .document(currentUser.uid)
         .collection('onMarked_location')
-        .document('carLocation')
+        .document('testCarLocation')
         .get()
         .then((result) {
       carLat = result.data['latitude'];
@@ -340,13 +322,13 @@ class _UserPageState extends State<UserPage> {
             infoWindow: InfoWindow(
                 title: 'My Car',
                 snippet: 'latitude: ' +
-                    carLat.toString() +
+                    carLat.toString().substring(0, 5) +
                     ',' +
                     'longitude: ' +
-                    carLong.toString() +
+                    carLong.toString().substring(0, 6) +
                     ',' +
                     'altitude: ' +
-                    carAlt.toString()),
+                    carAlt.toString().substring(0, 6)),
             icon: BitmapDescriptor.defaultMarker,
           ));
           // open altitude window below
@@ -379,7 +361,7 @@ class _UserPageState extends State<UserPage> {
         southwest: LatLng(
             lati1 - zoomFactor * deltaLati, longi1 - zoomFactor * deltaLongi),
       ),
-      50.0, // padding
+      50.0,
     ));
   }
 

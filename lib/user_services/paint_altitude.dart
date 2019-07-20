@@ -4,6 +4,7 @@ class MyPainter extends CustomPainter {
   double carAltitude;
   double currentAltitude; // user's
   double originalAltitude; // user's
+
   MyPainter(double carAlti, double currAlti, double originalAlti) {
     this.carAltitude = carAlti;
     this.currentAltitude = currAlti;
