@@ -1,4 +1,4 @@
-package com.example.fundare;
+package com.fundareapp.fundare;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
