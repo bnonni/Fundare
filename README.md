@@ -23,9 +23,8 @@ Fundare Flutter Development - Getting Started
    git clone https://github.com/bnonni/Fundare_Flutter
    ```
 
-3. cd into Fundare_Flutter via Terminal, and run the following commands:
+3. In the repo, run the following command:
    ```
-   cd app_fundare/
    flutter build ios
    ```
 
