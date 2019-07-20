@@ -17,6 +17,8 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
   DateTime now = new DateTime.now();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final Firestore _firestore = Firestore.instance;
 
   @override
   initState() {
@@ -99,22 +101,24 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
                     onPressed: () {
+                      String uid;
                       if (_registerFormKey.currentState.validate()) {
                         if (pwdInputController.text ==
                             confirmPwdInputController.text) {
-                          FirebaseAuth.instance
+                          _firebaseAuth
                               .createUserWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
-                              .then((currentUser) => Firestore.instance
+                              .then((currentUser) => _firestore
                                   .collection('user_data')
                                   .document(currentUser.uid)
+                                  .collection('login_info')
+                                  .document('profile')
                                   .setData({
                                     "first": firstNameInputController.text,
                                     "last": lastNameInputController.text,
                                     "email": emailInputController.text,
                                     "password": pwdInputController.text,
-                                    "locations": {},
                                   })
                                   .then((result) => {
                                         showDialog(
@@ -170,42 +174,45 @@ class _RegisterFormState extends State<RegisterForm> {
                                             ],
                                           );
                                         }),
-                                  ))
-                              .catchError((err) => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                              'Error',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red),
-                                            ),
-                                            content: Text(
-                                              'Email already exists. Please login.',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red),
-                                            ),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('Login'),
-                                                onPressed: () {
-                                                  Navigator
-                                                      .pushReplacementNamed(
-                                                          context, "/login");
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        }),
-                                    firstNameInputController.clear(),
-                                    lastNameInputController.clear(),
-                                    emailInputController.clear(),
-                                    pwdInputController.clear(),
-                                    confirmPwdInputController.clear(),
-                                  });
+                                  )
+                                  .catchError((err) => {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'Error',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red),
+                                                ),
+                                                content: Text(
+                                                  'Email already exists. Please login.',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red),
+                                                ),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Login'),
+                                                    onPressed: () {
+                                                      Navigator
+                                                          .pushReplacementNamed(
+                                                              context,
+                                                              "/login");
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                        firstNameInputController.clear(),
+                                        lastNameInputController.clear(),
+                                        emailInputController.clear(),
+                                        pwdInputController.clear(),
+                                        confirmPwdInputController.clear(),
+                                      }));
                         } else {
                           showDialog(
                               context: context,
@@ -249,3 +256,27 @@ class _RegisterFormState extends State<RegisterForm> {
             ))));
   }
 }
+
+/*
+Potential Use to Init Other Collections for Location Data
+.then((uid) => _firestore
+.collection('user_data')
+.document(currentUser.uid)
+.collection('onLoad_location')
+.document('userLocation')
+.setData({
+"altitude": 0,
+"latitude": 0,
+"longitude": 0,
+}).then((uid) => _firestore
+.collection('user_data')
+.document(currentUser.uid)
+.collection(
+'onMarked_location')
+.document('carLocation')
+.setData({
+"altitude": 0,
+"latitude": 0,
+"longitude": 0,
+})
+*/

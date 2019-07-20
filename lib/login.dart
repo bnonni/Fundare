@@ -14,6 +14,8 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseUser currentUser;
 
   @override
   initState() {
@@ -76,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                       textColor: Colors.white,
                       onPressed: () {
                         if (_loginFormKey.currentState.validate()) {
-                          FirebaseAuth.instance
+                          _firebaseAuth
                               .signInWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
@@ -90,8 +92,58 @@ class _LoginFormState extends State<LoginForm> {
                                           MaterialPageRoute(
                                               builder: (context) => UserPage(
                                                   uid: currentUser.uid))))
-                                  .catchError((err) => print(err)))
-                              .catchError((err) => print(err));
+                                  .catchError((err) => showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            'Error',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red),
+                                          ),
+                                          content: Text(
+                                            'Invalid email address. Please try again or register.',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red),
+                                          ),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Close'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      })))
+                              .catchError((err) => showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        'Error',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red),
+                                      ),
+                                      content: Text(
+                                        'Invalid email address. Please try again or register.',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Close'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  }));
                         }
                       },
                     ),
