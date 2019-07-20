@@ -47,9 +47,9 @@ class _UserPageState extends State<UserPage> {
           "latitude": userLocation.latitude,
           "longitude": userLocation.longitude,
         }, merge: true);
-        print(userLocation.longitude);
-        print(userLocation.latitude);
-        print(currentLocation.altitude);
+        // print(userLocation.longitude);
+        // print(userLocation.latitude);
+        // print(currentLocation.altitude);
       });
     });
   }
@@ -68,9 +68,9 @@ class _UserPageState extends State<UserPage> {
       "latitude": carloc.latitude,
       "longitude": carloc.longitude,
     }, merge: true);
-    print(carLocation.longitude);
-    print(carLocation.latitude);
-    print(currentLocation.altitude);
+    // print(carLocation.longitude);
+    // print(carLocation.latitude);
+    // print(currentLocation.altitude);
   }
 
   void getCurrentUser() async {
@@ -198,11 +198,11 @@ class _UserPageState extends State<UserPage> {
               infoWindow: InfoWindow(
                   title: '   Your Car ',
                   snippet: '  Latitude: ' +
-                      carLat.substring(0, 5) +
+                      carLat.toString().substring(0, 5) +
                       ',\nLongitude: ' +
-                      carLong.substring(0, 6) +
+                      carLong.toString().substring(0, 5) +
                       ',\nAltitude: ' +
-                      carAlt.substring(0, 6)),
+                      carAlt.toString().substring(0, 6)),
               icon: BitmapDescriptor.defaultMarker,
             ));
           });
