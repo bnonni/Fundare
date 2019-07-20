@@ -1,11 +1,9 @@
-import '../user.dart';
-import 'package:flutter/material.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final Firestore _firestore = Firestore.instance;
 FirebaseUser currentUser;
+String uid = currentUser.uid;
 
 class Loc3D {
   double latitude;
@@ -20,16 +18,17 @@ class Loc3D {
 }
 
 class DatabaseServices {
-  Future<Loc3D> getCarLocation() async {
-    // double lati = 33.74;
-    // double longi = -84.33;
-    // double alti = 5;
-    // return Loc3D(lati, longi, alti);
+  Loc3D carLocation;
+  getCarLocation() {
     _firestore
         .collection('user_data')
         .document(currentUser.uid)
+        .collection('onMarked_location')
+        .document('carLocation')
         .get()
-        .then((DocumentSnapshot result) => print(result))
-        .catchError((err) => print(err));
+        .then((result) {
+      return carLocation = new Loc3D(result.data['latitude'],
+          result.data['longitude'], result.data['altitude']);
+    });
   }
 }

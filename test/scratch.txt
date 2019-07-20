@@ -4,8 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './user_services/google_map_services.dart';
-import './user_services/poly_services.dart';
+import './user_services/google_map_services.dart'; // new
+// import './user_services/database_services.dart'; // new
+import './user_services/poly_services.dart'; // new
 
 class UserPage extends StatefulWidget {
   UserPage({Key key, this.uid}) : super(key: key);
@@ -23,7 +24,7 @@ class _UserPageState extends State<UserPage> {
   FirebaseUser currentUser;
   DateTime now;
   Set<Marker> carMarker = Set<Marker>();
-  Set<Polyline> routePolyline = Set<Polyline>();
+  Set<Polyline> routePolyline = Set<Polyline>(); // new
   GoogleMapController mapController;
 
   void initState() {
@@ -32,6 +33,9 @@ class _UserPageState extends State<UserPage> {
     Geolocator().getCurrentPosition().then((currloc) {
       setState(() {
         currentLocation = currloc;
+        print(currentLocation.longitude);
+        print(currentLocation.latitude);
+        print(currentLocation.altitude);
         mapToggle = true;
         //store initial location onLoad
         GeoFirePoint userLocation = geo.point(
@@ -41,37 +45,41 @@ class _UserPageState extends State<UserPage> {
             .collection('user_data')
             .document(currentUser.uid)
             .collection('onLoad_location')
-            .document('userLocation')
+            .document('carLocation')
             .setData({
           "altitude": currentLocation.altitude,
-          "latitude": userLocation.latitude,
-          "longitude": userLocation.longitude,
+          "userLocation": userLocation.data,
         }, merge: true);
         print(userLocation.longitude);
         print(userLocation.latitude);
-        print(currentLocation.altitude);
+        print(now);
       });
     });
   }
 
-  // onMarked_location/userLocation
-  void storeCarLocation(carLocation) {
-    GeoFirePoint carloc = geo.point(
-        latitude: carLocation.latitude, longitude: carLocation.longitude);
+  void storeCarLocation(currentLocation) {
+    GeoFirePoint userLocation = geo.point(
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude);
     _firestore
         .collection('user_data')
         .document(currentUser.uid)
         .collection('onMarked_location')
         .document('carLocation')
         .setData({
-      "altitude": carLocation.altitude,
-      "latitude": carloc.latitude,
-      "longitude": carloc.longitude,
+      "altitude": currentLocation.altitude,
+      "carLocation": userLocation.data,
     }, merge: true);
-    print(carLocation.longitude);
-    print(carLocation.latitude);
+    print(userLocation.longitude);
+    print(userLocation.latitude);
     print(currentLocation.altitude);
+    print(now);
   }
+
+  /*
+  Can maybe use this if geoflutterfire bugs out
+  _firestore.collection('user_data').document(currentUser.uid).setData({'locations': {'$now': {GeoPoint: [currloc.latitude, currloc.longitude]}}});
+  */
 
   void getCurrentUser() async {
     currentUser = await FirebaseAuth.instance.currentUser();
@@ -113,7 +121,7 @@ class _UserPageState extends State<UserPage> {
             color: Theme.of(context).primaryColor,
             onPressed: onAddMarkerButtonPressed,
           ),
-          SizedBox(height: 5.0),
+          SizedBox(height: 5.0), // new below
           FlatButton(
             child: Text('Go to Deck!',
                 style: TextStyle(
@@ -141,7 +149,6 @@ class _UserPageState extends State<UserPage> {
       Geolocator().getCurrentPosition().then((currloc) {
         setState(() {
           currentLocation = currloc;
-          now = new DateTime.now();
           storeCarLocation(currentLocation);
           mapToggle = true;
           carMarker.clear();
@@ -154,9 +161,11 @@ class _UserPageState extends State<UserPage> {
                 title: '   Your Car ',
                 snippet: '  Latitude: ' +
                     currentLocation.latitude.toString().substring(0, 5) +
-                    ',\nLongitude: ' +
+                    ',\n' +
+                    '  Longitude: ' +
                     currentLocation.longitude.toString().substring(0, 6) +
-                    ',\nAltitude: ' +
+                    ',\n' +
+                    '  Altitude: ' +
                     currentLocation.altitude.toString().substring(0, 6)),
             icon: BitmapDescriptor.defaultMarker,
           ));
@@ -167,26 +176,28 @@ class _UserPageState extends State<UserPage> {
 
   void onGoToDeckButtonPressed() {
     setState(() {
-      // get car location from database, has fields latitude, longitude, altitude
-      var carLat, carLong, carAlt;
-      _firestore
-          .collection('user_data')
-          .document(currentUser.uid)
-          .collection('onMarked_location')
-          .document('carLocation')
-          .get()
-          .then((result) {
-        carLat = result.data['latitude'];
-        carLong = result.data['longitude'];
-        carAlt = result.data['altitude'];
-        routePolyline.clear();
-        Geolocator().getCurrentPosition().then((currloc) {
-          // get user's current location below
-          currentLocation = currloc;
+      var carLocation, carAlt;
+      routePolyline.clear();
+      Geolocator().getCurrentPosition().then((currloc) {
+        // get user's current location below
+        currentLocation = currloc;
+        // DatabaseServices().getCarLocation().then((carloc) {
+        // get car location from database, has fields latitude, longitude, altitude
+        // carLocation = carloc;
+        // /user_data/u3cG09dqBWXbYc9GB1c9ON7mP0Y2/onMarked_location/carLocation
+        _firestore
+            .collection('user_data')
+            .document(currentUser.uid)
+            .collection('onMarked_location')
+            .document('carLocation')
+            .get()
+            .then((carloc) {
+          carLocation = carloc.data['geopoint'];
+          carAlt = carloc.data['altitude'];
           GoogleMapsServices()
               .getRouteCoordinates(
                   LatLng(currentLocation.latitude, currentLocation.longitude),
-                  LatLng(carLat, carLong))
+                  LatLng(carLocation.latitude, carLocation.longitude))
               .then((routeString) {
             // get polyline points from Google
             createRoute(routeString);
@@ -194,14 +205,16 @@ class _UserPageState extends State<UserPage> {
             carMarker.clear();
             carMarker.add(Marker(
               markerId: MarkerId('usercar'),
-              position: LatLng(carLat, carLong),
+              position: LatLng(carLocation.latitude, carLocation.longitude),
               infoWindow: InfoWindow(
-                  title: '   Your Car ',
-                  snippet: '  Latitude: ' +
-                      carLat.toString() +
-                      ',\nLongitude: ' +
-                      carLong.toString() +
-                      ',\nAltitude: ' +
+                  title: 'My Car',
+                  snippet: 'latitude: ' +
+                      carLocation.latitude.toString() +
+                      ',' +
+                      'longitude: ' +
+                      carLocation.longitude.toString() +
+                      ',' +
+                      'altitude: ' +
                       carAlt.toString()),
               icon: BitmapDescriptor.defaultMarker,
             ));
@@ -212,6 +225,7 @@ class _UserPageState extends State<UserPage> {
   }
 
   void createRoute(String encodedPoly) {
+    // new
     setState(() {
       routePolyline.clear();
       routePolyline.add(Polyline(
