@@ -198,11 +198,11 @@ class _UserPageState extends State<UserPage> {
               infoWindow: InfoWindow(
                   title: '   Your Car ',
                   snippet: '  Latitude: ' +
-                      carLat.toString() +
+                      carLat.substring(0, 5) +
                       ',\nLongitude: ' +
-                      carLong.toString() +
+                      carLong.substring(0, 6) +
                       ',\nAltitude: ' +
-                      carAlt.toString()),
+                      carAlt.substring(0, 6)),
               icon: BitmapDescriptor.defaultMarker,
             ));
           });
