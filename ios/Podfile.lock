@@ -68,7 +68,7 @@ PODS:
   - Flutter (1.0.0)
   - geoflutterfire (0.0.1):
     - Flutter
-  - geolocator (5.1.0):
+  - "geolocator (5.1.1+1)":
     - Flutter
   - google_api_availability (2.0.1):
     - Flutter
@@ -184,10 +184,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
-  cloud_firestore: 5698a9bd01b94fd31e7b7b56d8fe1665f4fb43cb
+  cloud_firestore: d1c0e6903eb554e2882d5519baa950201f101d14
   Firebase: 9445469655a98e9010737f4bc4720e5bda465873
-  firebase_auth: a5a625aecc89c176ee75e0266efe2c048df10052
-  firebase_core: 44f31f51532812598f0f9f4af0caa705b9edfc19
+  firebase_auth: 00d6e1ab6d890cd6d3c624df61702e3a7072d1e3
+  firebase_core: b3b02d0b5e9d01aab5e50ba7cbcf84c73cb6883c
   FirebaseAnalytics: 69fe25866d2ec87c6f02d72c3c9a82bce9c065a0
   FirebaseAuth: 68cfa47997f53d29ce978e7a615fb78d7925fcbe
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
@@ -196,7 +196,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 9782fcfb89e4d7da76cc28eac4b8543dc7be4a4b
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   geoflutterfire: 2a6493e01fb6eef1a6c9046b1baf9a943d0c5ffe
-  geolocator: d26e51a2ef57fa8a97a2630772f41206ebb9f9c9
+  geolocator: 9041fddc3646e5144b49c9843632365ef78d6ac2
   google_api_availability: 163b30f802e6148c67f092aa4501c90ddd8eec8d
   google_maps_flutter: 78a52114c898b42ea647919679a4c58b70abe876
   GoogleAppMeasurement: 1e45fa601e6280c180880d57010390f6679cd971

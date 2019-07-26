@@ -1,3 +1,3 @@
 #!bin/bash
-cd app;
+cd ~/Desktop/fundare;
 flutter doctor

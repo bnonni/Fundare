@@ -56,9 +56,6 @@ class _UserPageState extends State<UserPage> {
           "latitude": userLocation.latitude,
           "longitude": userLocation.longitude,
         }, merge: true);
-        // print(userLocation.longitude);
-        // print(userLocation.latitude);
-        // print(currentLocation.altitude);
       });
     });
   }
@@ -107,116 +104,144 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Fundare'),
-        ),
-        body: Stack(children: <Widget>[
-          Positioned(
-              top: 1,
-              left: 5,
-              width: 375,
-              height: 450,
-              child: mapToggle
-                  ? GoogleMap(
-                      onMapCreated: onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(currentLocation.latitude,
-                              currentLocation.longitude),
-                          zoom: 10.0),
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      markers: carMarker,
-                      polylines: routePolyline)
-                  : Center(
-                      child: Text(
-                      'Loading.. Please wait..',
-                      style: TextStyle(fontSize: 20.0),
-                    ))),
-          // SizedBox(height: 5.0),
-          Positioned(
-              top: 460,
-              left: 90,
-              width: 200,
-              height: 35,
-              child: RaisedButton(
-                child: Text('Mark my Car!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-                color: Theme.of(context).primaryColor,
-                onPressed: onAddMarkerButtonPressed,
-              )),
-          // SizedBox(height: 5.0),
-          Positioned(
-              top: 507,
-              left: 90,
-              width: 200,
-              height: 35,
-              child: RaisedButton(
-                child: Text('Go to Deck!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-                color: Theme.of(context).primaryColor,
-                onPressed: onGoToDeckButtonPressed,
-              )),
-          Positioned(
-              top: 555,
-              left: 90,
-              width: 200,
-              height: 35,
-              child: RaisedButton(
-                child: Text('Guide in Deck!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-                color: Theme.of(context).primaryColor,
-                onPressed: onGuideInDeckButtonPressed,
-              )),
-          Positioned(
-              top: 30,
-              left: 30,
-              width: 100,
-              height: 400,
-              child: altitudeToggle
-                  ? Center(
-                      child: CustomPaint(
-                          size: Size(100, 400),
-                          painter:
-                              MyPainter(carAlt, currentAlt, arriveDeckAlt)))
-                  : Center()),
-          Positioned(
-              top: -30,
-              left: 30,
-              width: 100,
-              height: 100,
-              child: altitudeToggle
-                  ? Center(
-                      child: Text('Altitude',
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)))
-                  : Center()),
-          Positioned(
-              top: 600,
-              left: 90,
-              width: 200,
-              height: 35,
-              child: RaisedButton(
-                  child: Text('Logout',
+      appBar: AppBar(
+        title: Text('Fundare'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Positioned(
+                top: 1,
+                left: 5,
+                width: 375,
+                height: 450,
+                child: mapToggle
+                    ? GoogleMap(
+                        onMapCreated: onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(currentLocation.latitude,
+                                currentLocation.longitude),
+                            zoom: 10.0),
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        markers: carMarker,
+                        polylines: routePolyline)
+                    : Center(
+                        child: Text(
+                        'Loading.. Please wait..',
+                        style: TextStyle(fontSize: 20.0),
+                      ))),
+            Positioned(
+                top: 460,
+                left: 90,
+                width: 200,
+                height: 35,
+                child: RaisedButton(
+                  child: Text('Mark my Car!',
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
                   color: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/');
-                  })),
-        ]));
+                  onPressed: onAddMarkerButtonPressed,
+                )),
+            // SizedBox(height: 5.0),
+            Positioned(
+                top: 507,
+                left: 90,
+                width: 200,
+                height: 35,
+                child: RaisedButton(
+                  child: Text('Go to Deck!',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: onGoToDeckButtonPressed,
+                )),
+            Positioned(
+                top: 555,
+                left: 90,
+                width: 200,
+                height: 35,
+                child: RaisedButton(
+                  child: Text('Guide in Deck!',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: onGuideInDeckButtonPressed,
+                )),
+            Positioned(
+                top: 30,
+                left: 30,
+                width: 100,
+                height: 400,
+                child: altitudeToggle
+                    ? Center(
+                        child: CustomPaint(
+                            size: Size(100, 400),
+                            painter:
+                                MyPainter(carAlt, currentAlt, arriveDeckAlt)))
+                    : Center()),
+            Positioned(
+                top: -30,
+                left: 30,
+                width: 100,
+                height: 100,
+                child: altitudeToggle
+                    ? Center(
+                        child: Text('Altitude',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)))
+                    : Center()),
+            Positioned(
+              top: 600,
+              left: 90,
+              width: 200,
+              height: 35,
+              child: RaisedButton(
+                child: Text(
+                  'Reset',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/user');
+                  altitudeStream.cancel();
+                },
+              ),
+            ),
+            Positioned(
+              top: 10,
+              left: 270,
+              width: 95,
+              height: 35,
+              child: RaisedButton(
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void onAddMarkerButtonPressed() {
@@ -294,8 +319,6 @@ class _UserPageState extends State<UserPage> {
 
   void onGuideInDeckButtonPressed() {
     double carLat, carLong, carAlt;
-    var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 1);
     // get car location from database: latitude, longitude, altitude
     _firestore
         .collection('user_data')

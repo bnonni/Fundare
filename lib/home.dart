@@ -1,83 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title, this.uid}) : super(key: key);
-  final String title;
-  final double uid;
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController taskTitleInputController;
-  TextEditingController taskDescripInputController;
-  FirebaseUser currentUser;
-
   @override
   initState() {
-    taskTitleInputController = new TextEditingController();
-    taskDescripInputController = new TextEditingController();
-    this.getCurrentUser();
     super.initState();
   }
 
-  void getCurrentUser() async {
-    currentUser = await FirebaseAuth.instance.currentUser();
-  }
-
-  // returns Scaffold obj containing main page with button choices
-
   @override
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
       ),
       body: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height - 300.0,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text("Fundare",
+        child: Column(
+          mainAxisAlignment: media.width > 375
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text(
+                  "Fundare",
                   style: TextStyle(
-                    fontSize: 75.0,
+                    fontSize: media.width > 375 ? 50.0 : 75.0,
                     color: Colors.black,
-                  )),
-              SizedBox(
-                height: 150.0,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/logo.png',
-                  fit: BoxFit.contain,
+                  ),
                 ),
-              ),
+                SizedBox(
+                  child: Image.asset(
+                    'asset/fundare_logo.png',
+                    fit: BoxFit.contain,
+                    width: media.width > 375 ? 135.0 : 200.0,
+                  ),
+                ),
+                SizedBox(
+                  height: media.width > 375 ? 5.0 : 20.0,
+                ),
+                Text(
+                  'Helping lost cars find their owners.',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: media.width > 375 ? 15.0 : 20.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: media.width > 375 ? 75.0 : 150.0,
+          child: ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
               RaisedButton(
-                padding: const EdgeInsets.fromLTRB(60.0, 15.0, 60.0, 15.0),
+                padding: media.width > 375
+                    ? EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, left: 60.0, right: 60.0)
+                    : EdgeInsets.only(
+                        top: 15.0, bottom: 15.0, left: 55.0, right: 55.0),
                 child: Text('Login',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: media.width > 375 ? 15 : 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
                 color: Theme.of(context).primaryColor,
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  setState(() {
+                    Navigator.pushNamed(context, '/login');
+                  });
                 },
               ),
               RaisedButton(
-                padding: const EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 15.0),
+                padding: media.width > 375
+                    ? EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, left: 50.0, right: 50.0)
+                    : EdgeInsets.only(
+                        top: 15.0, bottom: 15.0, left: 45.0, right: 45.0),
                 child: Text('Register',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: media.width > 375 ? 15 : 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
                 color: Theme.of(context).primaryColor,
                 onPressed: () {
-                  Navigator.pushNamed(context, '/register');
+                  setState(() {
+                    Navigator.pushNamed(context, '/register');
+                  });
                 },
               ),
             ],

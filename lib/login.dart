@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginForm extends StatefulWidget {
-  LoginForm({Key key}) : super(key: key);
+  LoginForm({Key key, this.title, this.uid}) : super(key: key);
+  final String title;
+  final double uid;
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -21,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   initState() {
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
+    this.getCurrentUser();
     super.initState();
   }
 
@@ -42,6 +45,10 @@ class _LoginFormState extends State<LoginForm> {
     } else {
       return null;
     }
+  }
+
+  void getCurrentUser() async {
+    currentUser = await FirebaseAuth.instance.currentUser();
   }
 
   Widget build(BuildContext context) {

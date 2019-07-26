@@ -18,7 +18,7 @@ class FundareApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => HomePage(title: 'Home'),
+        '/': (BuildContext context) => HomePage(),
         '/login': (BuildContext context) => LoginForm(),
         '/register': (BuildContext context) => RegisterForm(),
         '/user': (BuildContext context) => UserPage(),
