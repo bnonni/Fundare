@@ -27,6 +27,10 @@ class _LoginFormState extends State<LoginForm> {
     super.initState();
   }
 
+  void getCurrentUser() async {
+    currentUser = await FirebaseAuth.instance.currentUser();
+  }
+
   String emailValidator(String value) {
     Pattern pattern = r'^[a-zA-Z0-9\._%+-]+@[A-Za-z0-9.-]+[\.A-Za-z]{2,3}$';
     RegExp email = new RegExp(pattern);
@@ -47,18 +51,18 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  void getCurrentUser() async {
-    currentUser = await FirebaseAuth.instance.currentUser();
-  }
-
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: Text('Login'),
         ),
         body: Column(children: <Widget>[
           Container(
-              padding: const EdgeInsets.all(20.0),
+              height: media.width > 375 ? 350.0 : 500.0,
+              padding: media.width > 375
+                  ? const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0)
+                  : const EdgeInsets.all(20.0),
               child: SingleChildScrollView(
                   child: Form(
                 key: _loginFormKey,
