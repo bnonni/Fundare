@@ -22,11 +22,11 @@ dependencies:
   flutter_launcher_icons: ^0.7.2
   firebase_core:
   cloud_firestore:
-  firebase_auth:
+  firebase_auth: ^0.15.5+3
   google_maps_flutter:
-  geolocator:
-  location_permissions:
-  geoflutterfire:
+  geolocator: 
+  location_permissions: 
+  geoflutterfire: ^2.1.0
   http: ^0.12.0+2
 
 flutter_icons:

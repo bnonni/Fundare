@@ -52,26 +52,23 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: Text('Login'),
         ),
-        body: Column(children: <Widget>[
-          Container(
-              height: media.width > 375 ? 350.0 : 500.0,
-              padding: media.width > 375
-                  ? const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0)
-                  : const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                  child: Form(
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                  child: SingleChildScrollView(
+                      child: Form(
                 key: _loginFormKey,
                 child: Column(
                   children: <Widget>[
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'emailaddress@domain.com'),
+                          labelText: 'Email', hintText: 'email@domain.com'),
                       controller: emailInputController,
                       keyboardType: TextInputType.emailAddress,
                       validator: emailValidator,
@@ -93,9 +90,9 @@ class _LoginFormState extends State<LoginForm> {
                               .signInWithEmailAndPassword(
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
-                              .then((currentUser) => _firestore
+                              .then((authResult) => _firestore
                                   .collection('user_data')
-                                  .document(currentUser.uid)
+                                  .document(authResult.user.uid)
                                   .get()
                                   .then((DocumentSnapshot result) =>
                                       Navigator.pushReplacement(
@@ -168,6 +165,6 @@ class _LoginFormState extends State<LoginForm> {
                   ],
                 ),
               )))
-        ]));
+            ]));
   }
 }

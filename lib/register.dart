@@ -59,10 +59,8 @@ class _RegisterFormState extends State<RegisterForm> {
         title: Text('Register'),
       ),
       body: Container(
-        height: media.width > 375 ? 350.0 : 500.0,
-        padding: media.width > 375
-            ? const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0)
-            : const EdgeInsets.all(20.0),
+        height: 500.0,
+        padding: const EdgeInsets.fromLTRB(50.0, 50.0, 50.0, 50.0),
         child: SingleChildScrollView(
           child: Form(
             key: _registerFormKey,
@@ -124,9 +122,9 @@ class _RegisterFormState extends State<RegisterForm> {
                               email: emailInputController.text,
                               password: pwdInputController.text,
                             )
-                            .then((currentUser) => _firestore
+                            .then((authResult) => _firestore
                                 .collection('user_data')
-                                .document(currentUser.uid)
+                                .document(authResult.user.uid)
                                 .collection('login_info')
                                 .document('profile')
                                 .setData(

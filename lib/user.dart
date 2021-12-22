@@ -100,7 +100,23 @@ class _UserPageState extends State<UserPage> {
       }
     }
   }
-
+/* 
+          bottomNavigationBar:
+            BottomNavigationBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            title: Text('Register'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('School'),
+          ),
+        ]));
+*/
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;

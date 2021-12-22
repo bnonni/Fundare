@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "708518480951",
+    "firebase_url": "https://fundare-1561592424245.firebaseio.com",
+    "project_id": "fundare-1561592424245",
+    "storage_bucket": "fundare-1561592424245.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708518480951:android:6e73d6f8d5048c96aa83b2",
+        "android_client_info": {
+          "package_name": "com.fundare.fundareapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708518480951-4r320kv6jhfmq4d7cuo115mt1d590e5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1EQpyXLoJJFpFpTJAy_YfnldPDa97isY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708518480951-4r320kv6jhfmq4d7cuo115mt1d590e5h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708518480951-icseaki4i3obj8orbte72ok4sinp71i5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fundare.fundareapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
